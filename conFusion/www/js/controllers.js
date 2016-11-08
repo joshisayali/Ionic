@@ -39,7 +39,40 @@ angular.module('conFusion.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+
+
+    //Reserve table modal
+
+    $scope.reservation = {};
+     $ionicModal.fromTemplateUrl('templates/reserve.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.reserveform = modal;
+      });
+
+      $scope.reserve = function(){
+
+          $scope.reserveform.show();
+      };
+
+      $scope.closeReserve = function(){
+          $scope.reserveform.hide();
+      };
+
+        $scope.doReserve = function(){
+            console.log('Doing reservation', $scope.reservation);
+             $timeout(function() {
+                  $scope.closeReserve();
+                }, 1000);
+        };
+
+
+
+
+
+
 })
+
 
         .controller('MenuController', ['$scope', 'menuFactory','baseURL', function($scope, menuFactory, baseURL) {
 
