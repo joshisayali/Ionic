@@ -65,13 +65,65 @@ angular.module('conFusion.controllers', [])
                   $scope.closeReserve();
                 }, 1000);
         };
-
-
-
-
-
-
 })
+
+        .controller('FavoritesController',['$scope','favoriteFactory','menuFactory','baseURL','$ionicListDelegate',function($scope, favoriteFactory, menuFactory, baseURL, $ionicListDelegate){
+
+            $scope.baseURL = baseURL;
+            $scope.shouldShowDelete = false;
+            $scope.favorites = favoriteFactory.getFavorites();
+
+            menuFactory.getDishes().query(
+                function(response) {
+                    $scope.dishes = response;
+                    $scope.showMenu = true;
+                },
+                function(response) {
+                    $scope.message = "Error: "+response.status + " " + response.statusText;
+                });
+            console.log($scope.dishes, $scope.favorites);
+
+            $scope.deleteFavorite = function(index){
+
+                favoriteFactory.deleteFromFavorites(index);
+                $scope.shouldShowDelete = false;
+
+            };
+
+            $scope.toggleDelete = function(){
+
+                $scope.shouldShowDelete = !$scope.shouldShowDelete;
+                console.log("Show Delete: " + $scope.shouldShowDelete);
+            };
+
+
+        }])
+
+        .filter('favoriteFilter', function(){
+
+            //this will return a function which acts as a filter
+
+            //parameter 1: parameter on which filter operates
+            //parameter 2: parameter required by function
+            return function(dishes, favorites){
+
+                var out = [];
+
+                //better way to do this
+                for(var i=0;i<favorites.length;i++){
+
+                    for(var j=0;j<dishes.length;j++){
+
+                        if(favorites[i].id == dishes[j].id)
+                            out.push(dishes[j]);
+                    }
+                }
+
+                console.log("filter out:"+out);
+                return out;
+            }
+
+        })
 
 
         .controller('MenuController', ['$scope', 'menuFactory','favoriteFactory','baseURL','$ionicListDelegate', function($scope, menuFactory,favoriteFactory, baseURL, $ionicListDelegate) {

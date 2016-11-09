@@ -50,6 +50,7 @@ angular.module('conFusion.services',['ngResource'])
              var favFac = {};
              var favorites = [];
 
+             //this method gets called in menu controller
              favFac.addToFavorite = function(index){
                  console.log("Logging from factory. Dish id is : "+index);
 
@@ -60,6 +61,20 @@ angular.module('conFusion.services',['ngResource'])
                      }
 
                  favorites.push({id: index});
+             };
+
+             favFac.getFavorites = function(){
+                 return favorites;
+             };
+
+             favFac.deleteFromFavorites = function(index){
+
+                 for(var i=0; i<favorites.length; i++){
+
+                     if(favorites[i].id == index)
+                         favorites.splice(i,1);
+                 }
+
              };
 
              return favFac;
