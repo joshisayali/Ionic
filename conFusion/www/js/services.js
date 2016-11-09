@@ -45,4 +45,26 @@ angular.module('conFusion.services',['ngResource'])
 
         }])
 
+         .factory('favoriteFactory', ['$resource', 'baseURL', function($resource,baseURL) {
+
+             var favFac = {};
+             var favorites = [];
+
+             favFac.addToFavorite = function(index){
+                 console.log("Logging from factory. Dish id is : "+index);
+
+                 for(var i=0; i < favorites.length; i++)
+                     {
+                         if(favorites[i].id == index)
+                             return;
+                     }
+
+                 favorites.push({id: index});
+             };
+
+             return favFac;
+
+
+        }])
+
 ;
